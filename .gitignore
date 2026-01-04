@@ -1,0 +1,42 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+.env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Data files (MNIST will be downloaded)
+*.idx3-ubyte
+*.idx1-ubyte
+data/
+
+# Model saves
+*.pkl
+*.npy
+*.npz
+models/
+
+# Plots and outputs
+*.png
+*.jpg
+training_history.png
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
