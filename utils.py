@@ -14,15 +14,56 @@ def load_mnist():
     """
     Load MNIST dataset.
     
+    Tries multiple methods to load MNIST:
+    1. TensorFlow/Keras
+    2. Standalone Keras
+    3. scikit-learn (fetches from openml)
+    
     Returns:
         X_train, y_train, X_test, y_test
     """
-    # We'll use keras.datasets just for loading the data
-    # All neural network logic will be pure numpy
-    from tensorflow.keras.datasets import mnist
+    # Method 1: Try TensorFlow Keras
+    try:
+        from tensorflow.keras.datasets import mnist
+        (X_train, y_train), (X_test, y_test) = mnist.load_data()
+        return X_train, y_train, X_test, y_test
+    except (ImportError, ModuleNotFoundError):
+        pass
     
-    (X_train, y_train), (X_test, y_test) = mnist.load_data()
-    return X_train, y_train, X_test, y_test
+    # Method 2: Try standalone Keras
+    try:
+        from keras.datasets import mnist
+        (X_train, y_train), (X_test, y_test) = mnist.load_data()
+        return X_train, y_train, X_test, y_test
+    except (ImportError, ModuleNotFoundError):
+        pass
+    
+    # Method 3: Use scikit-learn to fetch from OpenML
+    try:
+        from sklearn.datasets import fetch_openml
+        print("Fetching MNIST from OpenML (this may take a moment)...")
+        
+        mnist = fetch_openml('mnist_784', version=1, as_frame=False, parser='auto')
+        X, y = mnist.data, mnist.target.astype(np.int32)
+        
+        # Split into train/test (first 60000 train, last 10000 test)
+        X_train, X_test = X[:60000], X[60000:]
+        y_train, y_test = y[:60000], y[60000:]
+        
+        # Reshape to (N, 28, 28) for consistency
+        X_train = X_train.reshape(-1, 28, 28).astype(np.uint8)
+        X_test = X_test.reshape(-1, 28, 28).astype(np.uint8)
+        
+        return X_train, y_train, X_test, y_test
+    except ImportError:
+        pass
+    
+    raise ImportError(
+        "Could not load MNIST. Please install one of:\n"
+        "  - pip install tensorflow\n"
+        "  - pip install keras\n"
+        "  - pip install scikit-learn"
+    )
 
 
 def preprocess_data(X_train, y_train, X_test, y_test):

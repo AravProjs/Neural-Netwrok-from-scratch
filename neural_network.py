@@ -457,7 +457,7 @@ class CrossEntropyLoss:
         Or in vector form:
             dL/dz = predictions - targets
         
-        Derivation (for the curious):
+        Derivation :
         -----------------------------
         The Jacobian of softmax is complex:
             dp_i/dz_j = p_i(1 - p_i)    if i = j
@@ -536,10 +536,10 @@ class NeuralNetwork:
                 self.activations.append(Softmax())
         
         print(f"Created Neural Network:")
-        print(f"  Architecture: {' → '.join(map(str, layer_sizes))}")
+        print(f"  Architecture: {' -> '.join(map(str, layer_sizes))}")
         print(f"  Layers: {self.num_layers}")
         for i, (layer, activation) in enumerate(zip(self.layers, self.activations)):
-            print(f"    [{i}] {layer} → {activation}")
+            print(f"    [{i}] {layer} -> {activation}")
     
     def forward(self, X: np.ndarray) -> np.ndarray:
         """
